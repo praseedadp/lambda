@@ -103,7 +103,8 @@ const appRoutes: Routes = [
     DemoService,
     AuthGuard,
     ProductSearchComponent,
-    DashboardComponentComponent
+    DashboardComponentComponent,
+    StoreLocationComponent
   ],
   bootstrap: [AppComponent]
 })
