@@ -60,12 +60,16 @@ export class DemoService {
     public demoService: DemoService;
     userCred: any;
     resultsApiIntegration: any;
+    showRetailerProfile: boolean = false;
+    showEditRetailerView: boolean = false;
 
     constructor(private http: Http, private router: Router) {
         console.log(constant.appcohesionURL);
         this.showclickorder = false;
         this.resultCount = 0;
         this.subMenuToggle = false;
+        this.showRetailerProfile = false;
+        this.showEditRetailerView = false;
         this.showPopup = false;
         this.router = router;
         if (localStorage.getItem('tokenExpiryTime')) {
@@ -312,13 +316,16 @@ export class DemoService {
                     if (this.results.status.code == constant.statusCode.success_code) {
                         this.resultForloop = this.results.stockDetails;
                         this.resultCount = this.results.totalResults;
+                       
                     } else if (this.results.status.code == constant.statusCode.empty_code) {
                         this.resultForloop = [];
                         this.resultCount = 0;
+                       
                     }
                     this.router.navigate(['/dashboard/search'], {
                         queryParams: reqBody
                     });
+                    this.showRetailerProfile = false;
                 }
             }, error => {
                 this.loading = false;

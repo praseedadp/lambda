@@ -24,6 +24,5 @@ export class DashboardHomeComponent implements OnInit {
     this.userDetails = {};
     this.userDetails.first_name = localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData")).first_name : "";
     this.userDetails.last_name = localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData")).last_name : "";
-
   }
 }

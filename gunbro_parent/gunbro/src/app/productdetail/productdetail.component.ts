@@ -49,7 +49,8 @@ results: any;
 	}
 
 	ngOnInit() {
-	    this.demoService.showPopup = false;
+			this.demoService.showPopup = false;
+		
 	    if(this.demoService.productInfo && this.demoService.productInfo.distributor_name) {
 	    	if (constant.distApiList.indexOf((this.demoService.productInfo.distributor_name).toLowerCase()) > -1) {
 			    this.checkSSQuantity().subscribe((response) => {

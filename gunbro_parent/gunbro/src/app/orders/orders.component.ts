@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/operator/delay';
-import 'rxjs/add/operator/do';
 import { JwtHelper } from 'angular2-jwt/angular2-jwt';
 import { DemoService } from '../demo-component/demo.service';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
@@ -26,9 +22,8 @@ export class OrdersComponent implements OnInit {
   configSuperAdminUser: any;
   configAdminUser: any;
   retailerAdminUser: any;
-  constructor(public demoService: DemoService, private http: Http, private router: Router) {
- 
-  }
+
+  constructor(public demoService: DemoService, private http: Http, private router: Router) {}
 
   ngOnInit() {
     this.userGroup = localStorage.getItem('userGroup') && localStorage.getItem('userGroup') != 'null' ? localStorage.getItem('userGroup') : '';
@@ -57,11 +52,9 @@ export class OrdersComponent implements OnInit {
                   };
                  const url = constant.appcohesionURL.orderList_URL && constant.appcohesionURL.orderList_URL != 'null' ? constant.appcohesionURL.orderList_URL : '';
                   this.http.post(url, req_body, options).subscribe(data => {
-                    console.log("check empty data : " + data);
-                    this.demoService.loading = false;
-                      this.results = data ? data.json() :"";                    
-                      console.log("order list details : " + JSON.stringify(this.results));                     
-                       if(this.results && this.results.statusCode){                       
+                   this.demoService.loading = false;
+                      this.results = data ? data.json() : "";                    
+                      if(this.results && this.results.statusCode){                       
                           if (this.results.statusCode == 200 && Object.keys(this.results.data).length) {                           
                           this.orderDetails = this.results.data ? this.results.data : "";
                           } else if (this.results.statusCode == constant.statusCode.empty_code) {

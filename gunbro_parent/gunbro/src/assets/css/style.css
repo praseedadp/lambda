@@ -13,7 +13,7 @@
 {float: left;width: 100%;}
 .ac-login-logo,.ac-login-submit{text-align: center;}
 .ac-login-submit button,.ac-login-reset a,.ac-password-text,.ac-main-nav-body li a,.ac-search-shrinked,.ac-search-trigger,.ac-quick-access-buttons a,
-.ac-quick-access-togglr,.ac-quick-access-wrap, .ac-main-content-wrap, .ac-global-header, .ac-main-nav-wrap,.ac-main-nav-head,.ac-employees-unsorted img, .ac-employees-unsorted span::before,.ac-button-outlined,.ac-create-employee-drawer,.ac-close-employee-drawer,.ac-result-card,.ac-result-card-body img,.ac-order-status tr
+.ac-quick-access-togglr,.ac-quick-access-wrap, .ac-main-content-wrap, .ac-global-header, .ac-main-nav-wrap,.ac-main-nav-head,.ac-employees-unsorted img, .ac-employees-unsorted span::before,.ac-button-outlined,.ac-create-employee-drawer,.ac-close-employee-drawer,.ac-profile-drawer,.ac-edit-profile-drawer,.ac-result-card,.ac-result-card-body img,.ac-order-status tr
  {
   -webkit-transition: all 0.2s ease-in-out 0s;
   -moz-transition: all 0.2s ease-in-out 0s;
@@ -1343,11 +1343,6 @@ object-position: center center;opacity: 0.85;
   vertical-align: top;
   width: 100%;
 }
-.ac-image-viewer img {
-  width: 100%;
-  padding: 56px;
-  filter: none !important;
-}
 .ac-iv-pane {
   background-color: #ebedf0;
   float: left;
@@ -1996,8 +1991,10 @@ h4 {
   margin-bottom: 3px;
 }
 .ac-quick-profile-info{
-padding-top: 30px;
-border-left: 1px solid #dedede;
+  padding-top: 30px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-left: 1px solid #dedede;
 }
 .ac-quick-profile-img
 span {
@@ -2038,9 +2035,9 @@ border-top: none;
   border-bottom: 1px solid lightgrey;
 }
 .socialmedia-listing {
-  margin-bottom: 25px;
+  /*margin-bottom: 25px;*/
   width: auto;
-  margin-left: 75px;
+  margin-left: 85px;
 }
 ul.socialmedia-unsorted{
 float: left;
@@ -2063,7 +2060,55 @@ width: 27px;
   padding: 7px;
 }
 .ac-edit-profile{
-margin-top: 30px;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+.ac-contacts {
+  margin-top: 25px;
+}
+.ac-profile-drawer {
+background-color: #ffffff;
+-webkit-box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+-moz-box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+height: calc(100% - 70px);
+opacity: 1;
+overflow-y: auto;
+position: fixed;
+right: -400px;
+opacity: 0;
+top: 70px;
+width: 320px;
+z-index: 9999;
+}
+.ac-profile-drawer-on .ac-profile-drawer {
+opacity: 1 !important;
+right: 0px !important;
+}
+.ac-profile-drawer::-webkit-scrollbar {
+  width: 3px;
+}
+.ac-profile-drawer::-webkit-scrollbar-track {
+  background-color: #DEDEDE;
+}
+.ac-profile-drawer::-webkit-scrollbar-thumb {
+  background-color: #c2c2c2;
+}
+.profile-header h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #5c6bc0;
+  text-align: center;
+  margin-top: 25px;
+}
+span.addRetailerCloseDrawer {
+  background-image: url(../images/icon-cross.png);
+  float: right;
+  background-repeat: no-repeat;
+  background-size: 12px;
+  background-position: center center;
+  cursor: pointer;
+  padding: 15px;
 }
 /*profile page ends*/
 
@@ -2411,6 +2456,62 @@ button.markup-apply-all[disabled] {
 .ac-markup-percentage h3{
   color: white;
 }
+/*edit profile start*/
+input.editableName{
+  width: 100%;
+  text-align: center;
+  border: none;
+}
+input.editableAddress {
+    width: 100%;
+    border: none;
+    text-align: center;
+    font-size: 11px;
+}
+input.editableContacts {
+    width: 100%;
+    border: none;
+}
+textarea.editableOtherInfo {
+    width: 100%;
+}
+img.uploadphoto{
+  border-radius: 0px;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 178px;
+  right: 112px;
+}
+.ac-edit-profile-drawer {
+  background-color: #ffffff;
+  -webkit-box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+  height: calc(100% - 70px);
+  opacity: 1;
+  overflow-y: auto;
+  position: fixed;
+  right: -400px;
+  opacity: 0;
+  top: 70px;
+  width: 320px;
+  z-index: 9999;
+}
+.ac-edit-profile-drawer-on .ac-edit-profile-drawer {
+  opacity: 1 !important;
+  right: 0px !important;
+}
+.ac-edit-profile-drawer::-webkit-scrollbar {
+    width: 3px;
+}
+.ac-edit-profile-drawer::-webkit-scrollbar-track {
+    background-color: #DEDEDE;
+}
+.ac-edit-profile-drawer::-webkit-scrollbar-thumb {
+    background-color: #c2c2c2;
+}
+/*edit profile end*/
 
 /*store location starts*/
 .ac-distributor-card h4 {
@@ -2422,7 +2523,6 @@ button.markup-apply-all[disabled] {
 .storeImg {
     height: 125px;
     background-color: #c8cef2;
-    background-image: url(../demo-assets/retailer1.png);
 }
 .storeDetails h6 {
     font-size: 14px;
@@ -2514,7 +2614,7 @@ button.markup-apply-all[disabled] {
 }
 .ac-locationDetails-on .ac-location-details-drawer {
   opacity: 1 !important;
-  right: 0px !important;
+  right: 80px !important;
 }
 .ac-location-details-drawer{
   -webkit-transition: all 0.2s ease-in-out 0s;
@@ -2559,6 +2659,7 @@ button.markup-apply-all[disabled] {
     width: 48%;
 }
 /*store locations end*/
+
 
 
 /* Responsive CSS */
@@ -2662,7 +2763,7 @@ button.markup-apply-all[disabled] {
   width: 20%;
 }
 .ac-user-controls {
-  width: 30%;
+  width: 80%;
 }
 .ac-create-employee.ac-button-outlined {
   font-size: 12px;
@@ -2734,9 +2835,15 @@ button.markup-apply-all[disabled] {
 .ac-quick-access-wrap{display: none;}
 .ac-main-content-wrap, .ac-main-nav-on .ac-global-header{padding-right: 0;}
 .ac-create-employee-drawer{top:0;height: 100%;}
-.ac-create-employee-on .ac-create-employee-drawer{
-  right: 0 !important;
-}
+.ac-profile-drawer{top:0;height: 100%;}
+.ac-edit-profile-drawer{top:0;height: 100%;}
+.ac-location-details-drawer{top:0;height: 100%;}
+.ac-add-retailer-drawer{top:0;height: 100%;}
+.ac-create-employee-on .ac-create-employee-drawer{right: 0 !important;}
+.ac-profile-drawer-on .ac-profile-drawer{right: 0 !important;}
+.ac-edit-profile-drawer-on .ac-edit-profile-drawer{right: 0 !important;}
+.ac-locationDetails-on .ac-location-details-drawer{right: 0 !important;}
+.ac-add-retailer-on .ac-add-retailer-drawer{right: 0 !important;}
 }
 @media only screen and (max-width:800px){
 .ac-search-wrap {
@@ -2744,7 +2851,6 @@ button.markup-apply-all[disabled] {
 }
 .ac-user-controls {
   width: calc(100% - 70px);
-  width: 30%;
 }
 .ac-user-actions h3 {
   display: none;

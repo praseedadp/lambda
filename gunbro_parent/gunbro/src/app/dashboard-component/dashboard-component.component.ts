@@ -4,7 +4,7 @@ import { Location } from '@angular/common';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import {Observable} from 'rxjs/Rx'; 
 import 'rxjs/add/operator/map';
-
+import { FormBuilder, Validators,FormsModule } from '@angular/forms';
 import { DemoService } from '../demo-component/demo.service';
 import * as constant from '../shared/config';
 
@@ -54,15 +54,25 @@ export class DashboardComponentComponent implements OnInit {
   showRetailer: any;
   hideRetailer: any;
   userDetails: any;
-  
+  userId: any;
+  successTitle: string;
+  successDescription: string;
+  updateRetailerProfilePopup: boolean = false;
+  result: any;
+  retailerProfileDetails: any;
+  editRetailerProfileDetails: any;
+  editRetailerDetails: any;
+  isNameValid:Boolean=true;
+ 
   constructor(private route: ActivatedRoute,private router: Router, public demoService: DemoService,private http:Http) {
     this.hideMFGSearch = true;
     this.hideGSINSearch = true;
     this.disableSearch = true;
     this.searchKey = '';
     this.userGroup = '';
-
+   
   }
+ 
   
   ngOnInit() {
     this.userName = this.demoService.getCognitoUser().getUsername();
@@ -74,8 +84,9 @@ export class DashboardComponentComponent implements OnInit {
     this.userDetails = {};
     this.userDetails.first_name = localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData")).first_name : "";
     this.userDetails.last_name = localStorage.getItem("userData") ? JSON.parse(localStorage.getItem("userData")).last_name : "";
+    this.userId = localStorage.getItem("User_Information") ? JSON.parse(localStorage.getItem("User_Information"))[0].user_id: "";
   }
-
+  
     clickedSearch(){
         this.showSearchIconRead = !this.showSearchIconRead;
         this.productsearch_name = "";
@@ -95,16 +106,7 @@ export class DashboardComponentComponent implements OnInit {
         this.searchKey = this.searchMFG;
         this.manufacturerId = this.selectManufacturer;
       }
-
-      // if(this.searchType == "") {
-      //   this.errorMessage = "Please select search type.";
-      // }
-      // else if (this.searchKey == "") {
-      //   this.errorMessage = "Please enter valid value.";
-      // }
-      // else {
-        // this.errorMessage = "";
-        return this.demoService.getSessionToken().subscribe((response) => {
+      return this.demoService.getSessionToken().subscribe((response) => {
             if(response.getIdToken().getJwtToken()) {
                 const jwt = response.getIdToken().getJwtToken();
                 this.demoService.productSearchfromService(this.searchType, this.searchKey, jwt, this.manufacturerId);
@@ -133,5 +135,97 @@ export class DashboardComponentComponent implements OnInit {
       console.log($event);
       this.disableSearch = false;
     }
+
+   // Method for showing Retailer profile 
+     retailerProfile(event){
+      this.demoService.showRetailerProfile = true;
+      event.stopPropagation()
+      this.retailerProfileDetails = {};
+      return this.demoService.getSessionToken().subscribe((response) => {
+        if(response.getIdToken().getJwtToken()) {
+            const jwt = response.getIdToken().getJwtToken();
+            let headers = new Headers({
+              'Authorization': jwt
+            });
+            let options = new RequestOptions({
+              headers: headers
+            });
+            var req_body = { "userId" : this.userId };
+            const url = constant.appcohesionURL.retailerProfile_URL;
+            this.http.post(url, req_body, options).subscribe(data => {
+             this.demoService.loading = false;
+              this.result = data ? data.json() : {};
+             if (this.result && this.result.status) {
+
+                if (this.result.status.code == constant.statusCode.success_code) {
+                   for(var item in this.result.userinfo){
+                      this.retailerProfileDetails.FirstName = this.result.userinfo[item].FirstName ? this.result.userinfo[item].FirstName : "";
+                      this.retailerProfileDetails.LastName = this.result.userinfo[item].LastName ? this.result.userinfo[item].LastName : "";
+                      this.retailerProfileDetails.Name =  this.retailerProfileDetails.FirstName + " " +this.retailerProfileDetails.LastName;
+                      this.retailerProfileDetails.UserPhone = this.result.userinfo[item].UserPhone && this.result.userinfo[item].UserPhone == "null" ? "" : this.result.userinfo[item].UserPhone;
+                      this.retailerProfileDetails.UserEmail = this.result.userinfo[item].UserEmail && this.result.userinfo[item].UserEmail == "null" ? "" : this.result.userinfo[item].UserEmail;
+                    }
+                }
+                else if (this.result.statusCode == constant.statusCode.empty_code){
+                  console.log("error")
+                }
+              }
+            });
+        }
+      }, (err) => {
+        console.log(err);
+      });
+    }
+
+    // Method for showing retailer profile details in edit page
+    editRetailerProfile(){
+      this.editRetailerDetails = [];
+      this.demoService.showEditRetailerView = true;
+      this.editRetailerDetails.push(this.retailerProfileDetails);
+    }
+   
+    // Method for updating retailer profile
+    updateRetailerProfile(retailer){
+      return this.demoService.getSessionToken().subscribe((response) => {
+        if(response.getIdToken().getJwtToken()) {
+          const jwt = response.getIdToken().getJwtToken();
+          let headers = new Headers({
+            'Authorization': jwt
+          });
+          let options = new RequestOptions({
+            headers: headers
+          });
+          var req_body = { "userid" : this.userId ? this.userId : "",
+                          "firstname" : retailer.FirstName ? retailer.FirstName : "",
+                          "lastname": retailer.LastName ? retailer.LastName : "",
+                          "userphone": retailer.UserPhone ?  retailer.UserPhone : ""
+                         };
+           console.log("request body : " + JSON.stringify(req_body));
+          const url = constant.appcohesionURL.updateRetailerProfile_URL ? constant.appcohesionURL.updateRetailerProfile_URL : "";
+          this.http.post(url, req_body, options).subscribe(data => {
+            this.demoService.loading = false;
+            this.result = data ? data.json() : {};
+            console.log("result ******* " + JSON.stringify(this.result))
+            if (this.result && this.result.status) {
+              if (this.result.status.code == constant.statusCode.success_code) {
+                console.log("success data" + this.result.status.code);
+                this.updateRetailerProfilePopup = true;
+                this.successTitle = constant.retailerProfile_messages.success_title;
+                this.successDescription = constant.retailerProfile_messages.success_description;
+               
+                this.retailerProfile(event);
+                this.demoService.showEditRetailerView = this.updateRetailerProfilePopup ? false : true; 
+              }
+              else if (this.result.statusCode == constant.statusCode.empty_code){
+                console.log("error");
+              }
+            }
+          });
+        }
+      }, (err) => {
+        console.log(err);
+      });
+    }
+    
 }
 
