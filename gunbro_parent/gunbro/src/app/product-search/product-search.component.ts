@@ -19,7 +19,7 @@ export class ProductSearchComponent implements OnInit {
   	} 	
   	ngOnInit() {
 		let paramVal = this.route.snapshot.queryParams["wildcard"]? this.route.snapshot.queryParams["wildcard"]:this.route.snapshot.queryParams["gsin"]? this.route.snapshot.queryParams["gsin"]:this.route.snapshot.queryParams["mpn"]? this.route.snapshot.queryParams["mpn"]:"";
-		alert(this.route.snapshot.queryParams);
+		
 		
 		let paramKey = this.route.snapshot.queryParams["wildcard"]? "wildcard":this.route.snapshot.queryParams["gsin"]? "gsin":this.route.snapshot.queryParams["mpn"]?"mpn":"";
 		
