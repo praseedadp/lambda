@@ -18,12 +18,16 @@ export class ProductSearchComponent implements OnInit {
   		this.resultssearch = this.details;
   	} 	
   	ngOnInit() {
-		let param1 = this.route.snapshot.queryParams["wildcard"];
-		if(param1)	
+		let paramVal = this.route.snapshot.queryParams["wildcard"]? this.route.snapshot.queryParams["wildcard"]:this.route.snapshot.queryParams["gsin"]? this.route.snapshot.queryParams["gsin"]:this.route.snapshot.queryParams["mpn"]? this.route.snapshot.queryParams["mpn"]:"";
+		alert(this.route.snapshot.queryParams);
+		
+		let paramKey = this.route.snapshot.queryParams["wildcard"]? "wildcard":this.route.snapshot.queryParams["gsin"]? "gsin":this.route.snapshot.queryParams["mpn"]?"mpn":"";
+		
+		if(paramVal)	
 			return this.demoService.getSessionToken().subscribe((response) => {
 			  if (response.getIdToken().getJwtToken()) {
 				const jwt = response.getIdToken().getJwtToken();
-				this.demoService.productSearchfromService("wildcard", param1, jwt, "");	
+				this.demoService.productSearchfromService("wildcard", paramVal, jwt, "");	
 			  }
 			}, (err) => {
 			  console.log(err);
